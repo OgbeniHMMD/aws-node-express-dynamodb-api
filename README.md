@@ -73,13 +73,13 @@ curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/users/someUserId
 Which should result in the following response:
 
 ```bash
-{"userId":"someUserId","name":"John"}
+{"userId":"someUserId","firstName":"John","lastName":"Doe"}
 ```
 
 If you try to retrieve user that does not exist, you should receive the following response:
 
 ```bash
-{"error":"Could not find user with provided \"userId\""}
+{ "message": "User not found" }
 ```
 
 ### Local development
