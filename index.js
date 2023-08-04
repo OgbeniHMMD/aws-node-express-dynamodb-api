@@ -8,13 +8,25 @@ const serverless = require("serverless-http");
 const app = express();
 
 const USERS_TABLE = process.env.USERS_TABLE;
-const client = new DynamoDBClient();
-const dynamoDBDocument = DynamoDBDocument.from(client);
+
+let dynamoDBClientQuery = {}
+if (process.env.IS_OFFLINE) {
+  dynamoDBClientQuery = {
+    region: process.env.AWS_REGION,
+    endpoint: process.env.AWS_DDB_ENDPOINT,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    }
+  }
+}
+
+const dynamoDBClient = new DynamoDBClient(dynamoDBClientQuery);
+const dynamoDBDocument = DynamoDBDocument.from(dynamoDBClient);
 
 app.use(express.json());
 
 app.get("/users", async function (req, res) {
-
   var params = {
     TableName: USERS_TABLE,
   };
