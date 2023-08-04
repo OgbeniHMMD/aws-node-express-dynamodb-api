@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon -e js  --exec \"sls offline\""
+    "start": "nodemon -e js  --exec \"sls offline\"",
+    "build": "zip -FSr build/lambda-function.zip . -x '*.git*' -x '*.DS_Store*' -x '*build*'"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.382.0",
