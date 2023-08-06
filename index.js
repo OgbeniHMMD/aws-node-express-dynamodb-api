@@ -2,16 +2,17 @@
 const express = require("express");
 const serverless = require("serverless-http");
 
+const indexRouter = require('./routers/indexRouter');
+const usersRouter = require('./routers/usersRouter');
+
+require('dotenv').config()
+const port = process.env.PORT || 3000;
+
 const app = express();
-
-const { getAllUsers, getSingleUser, createUser, updateUser } = require('./controllers/users.controller');
-
 app.use(express.json());
 
-app.get("/users", getAllUsers);
-app.get("/users/:userId", getSingleUser);
-app.post("/users", createUser);
-app.patch("/users/:userId", updateUser);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 app.use((req, res, next) => {
   return res.status(404).json({
@@ -19,4 +20,11 @@ app.use((req, res, next) => {
   });
 });
 
-module.exports.handler = serverless(app);
+if (process.env.ENVIRONMENT == 'production') {
+  exports.handler = serverless(app);
+} else {
+  app.listen(port, () => {
+    console.log(`Server is listening on port ${port}.`);
+  });
+}
+

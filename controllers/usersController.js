@@ -1,8 +1,8 @@
-const crypto = require('crypto');
+const { randomUUID } = require('crypto');
 const { dynamoDB, USERS_TABLE } = require("../config/dynamoDB");
+const { throwError500 } = require('../lib/errorHandlers');
 
-// GET:: /user
-async function getAllUsers(req, res) {
+exports.getAllUsers = async function (req, res) {
     const params = {
         TableName: USERS_TABLE,
         Limit: 10,
@@ -17,13 +17,11 @@ async function getAllUsers(req, res) {
             res.json({ message: 'Users not found' });
         }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error" });
+        throwError500(res, error);
     }
 }
 
-// GET:: /user/:userId
-async function getSingleUser(req, res) {
+exports.getSingleUser = async function (req, res) {
     const params = {
         TableName: USERS_TABLE,
         Key: {
@@ -43,13 +41,11 @@ async function getSingleUser(req, res) {
             res.json({ message: 'User not found' });
         }
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error" });
+        throwError500(res, error);
     }
 }
 
-// POST:: /user
-async function createUser(req, res) {
+exports.createUser = async function (req, res) {
     const { firstName, lastName } = req.body;
     if (typeof firstName !== "string") {
         res.status(400).json({ error: 'firstName must be a string' });
@@ -57,7 +53,7 @@ async function createUser(req, res) {
         res.status(400).json({ error: 'lastName must be a string' });
     }
 
-    const userId = crypto.randomUUID()
+    const userId = randomUUID()
     const params = {
         TableName: USERS_TABLE,
         Item: {
@@ -72,13 +68,11 @@ async function createUser(req, res) {
             data: params.Item
         });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Could not create user" });
+        throwError500(res, error);
     }
 }
 
-// PATCH:: /user/:userId
-async function updateUser(req, res) {
+exports.updateUser = async function (req, res) {
     const { firstName, lastName } = req.body;
     if (typeof firstName !== "string") {
         res.status(400).json({ error: '"name" must be a string' });
@@ -102,11 +96,6 @@ async function updateUser(req, res) {
             data: params.Item
         });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error" });
+        throwError500(res, error);
     }
-}
-
-module.exports = {
-    getAllUsers, getSingleUser, createUser, updateUser
 }

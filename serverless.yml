@@ -1,11 +1,8 @@
 org: ogbenihmmd
-app: aws-node-express-dynamodb-api
-service: aws-node-express-dynamodb-api
+app: aws-lambda-express-dynamodb-api
+service: aws-lambda-express-dynamodb-api
 frameworkVersion: '3'
 useDotenv: true
-
-custom:
-  tableName: 'users-table-${sls:stage}'
 
 provider:
   name: aws

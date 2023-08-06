@@ -3,7 +3,7 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 
 let dynamoDBClientQuery = {}
-if (process.env.IS_OFFLINE) {
+if (process.env.ENVIRONMENT == 'production') {
     dynamoDBClientQuery = {
         region: process.env.AWS_REGION,
         endpoint: process.env.AWS_DDB_ENDPOINT,
