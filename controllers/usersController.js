@@ -1,5 +1,5 @@
 const { randomUUID } = require('crypto');
-const { dynamoDB, USERS_TABLE } = require("../config/dynamoDB");
+const { dynamoDBDocument, USERS_TABLE } = require("../config/dynamoDB");
 const { throwError500 } = require('../lib/errorHandlers');
 
 exports.getAllUsers = async function (req, res) {
@@ -10,7 +10,7 @@ exports.getAllUsers = async function (req, res) {
     };
 
     try {
-        const { Items: data, Count, LastEvaluatedKey } = await dynamoDB.scan(params);
+        const { Items: data, Count, LastEvaluatedKey } = await dynamoDBDocument.scan(params);
         if (Count) {
             res.json({ data, Count, LastEvaluatedKey });
         } else {
@@ -30,7 +30,7 @@ exports.getSingleUser = async function (req, res) {
     };
 
     try {
-        const { Item } = await dynamoDB.get(params);
+        const { Item } = await dynamoDBDocument.get(params);
 
         if (Item) {
             res.json({
@@ -62,7 +62,7 @@ exports.createUser = async function (req, res) {
     };
 
     try {
-        await dynamoDB.put(params);
+        await dynamoDBDocument.put(params);
         res.json({
             message: "User created successfully",
             data: params.Item
@@ -90,7 +90,7 @@ exports.updateUser = async function (req, res) {
     };
 
     try {
-        await dynamoDB.put(params);
+        await dynamoDBDocument.put(params);
         res.json({
             message: "User updated successfully",
             data: params.Item

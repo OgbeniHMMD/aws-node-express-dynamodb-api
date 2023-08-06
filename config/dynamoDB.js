@@ -1,9 +1,11 @@
-
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 
 let dynamoDBClientQuery = {}
-if (process.env.ENVIRONMENT == 'production') {
+let USERS_TABLE = "users-table-dev"
+
+if (process.env.ENVIRONMENT == 'development') {
+    USERS_TABLE = process.env.USERS_TABLE
     dynamoDBClientQuery = {
         region: process.env.AWS_REGION,
         endpoint: process.env.AWS_DDB_ENDPOINT,
@@ -14,9 +16,10 @@ if (process.env.ENVIRONMENT == 'production') {
     }
 }
 
-const client = new DynamoDBClient(dynamoDBClientQuery);
+const client = new DynamoDBClient();
+const dynamoDBDocument = DynamoDBDocument.from(client);
 
 module.exports = {
-    dynamoDB: DynamoDBDocument.from(client),
-    USERS_TABLE: process.env.USERS_TABLE
+    dynamoDBDocument,
+    USERS_TABLE
 }

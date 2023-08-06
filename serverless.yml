@@ -1,19 +1,11 @@
 org: ogbenihmmd
-app: aws-lambda-express-dynamodb-api
-service: aws-lambda-express-dynamodb-api
+app: serverless-express-dynamodb-api
+service: backend-service
 frameworkVersion: '3'
-useDotenv: true
 
 provider:
   name: aws
   runtime: nodejs18.x
-
-  environment:
-    USERS_TABLE: ${env:USERS_TABLE}
-    AWS_REGION: ${env:AWS_REGION}
-    AWS_DDB_ENDPOINT: ${env:AWS_DDB_ENDPOINT}
-    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
-    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
 
 functions:
   api:
