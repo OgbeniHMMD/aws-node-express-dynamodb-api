@@ -7,8 +7,8 @@
     },
     "basePath": "/api",
     "schemes": [
-        "http",
-        "https"
+        "https",
+        "http"
     ],
     "consumes": [
         "application/json"
@@ -41,17 +41,7 @@
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "A list of users.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/users": {
@@ -75,7 +65,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of users.",
+                        "description": "A list of all users.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -89,17 +79,14 @@
                 "tags": [
                     "users"
                 ],
-                "description": "Returns all users",
+                "description": "Create new user",
                 "parameters": [
                     {
-                        "name": "limit",
-                        "in": "query",
-                        "description": "How many items to return at one time (max 100)",
-                        "required": false,
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "integer",
-                            "maximum": 100,
-                            "format": "int32"
+                            "$ref": "#/definitions/NewUser"
                         }
                     }
                 ],
@@ -107,10 +94,7 @@
                     "200": {
                         "description": "User created successfully",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/User"
-                            }
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -128,18 +112,14 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of users.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/User"
-                            }
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
@@ -156,6 +136,17 @@
                 "userId": {
                     "type": "string"
                 },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                }
+            }
+        },
+        "NewUser": {
+            "type": "object",
+            "properties": {
                 "firstName": {
                     "type": "string"
                 },
