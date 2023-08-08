@@ -1,6 +1,6 @@
 const { randomUUID } = require('crypto');
 const { dynamoDBDocument, USERS_TABLE } = require("../config/dynamoDB");
-const { throwError500 } = require('../lib/errorHandlers');
+const { throwError500 } = require('../libs/errorHandlers');
 
 exports.getAllUsers = async function (req, res) {
     const params = {
@@ -53,11 +53,12 @@ exports.createUser = async function (req, res) {
         res.status(400).json({ error: 'lastName must be a string' });
     }
 
-    const userId = randomUUID()
+    const userId = randomUUID().replaceAll("-", "")
     const params = {
         TableName: USERS_TABLE,
         Item: {
-            userId, firstName, lastName
+            userId,
+            firstName, lastName
         },
     };
 
